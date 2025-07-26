@@ -1,0 +1,85 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \{\
+  "run": [\
+    \{\
+      "method": "shell.run",\
+      "params": \{\
+        "message": "docker --version"\
+      \}\
+    \},\
+    \{\
+      "method": "shell.run", \
+      "params": \{\
+        "message": "docker volume create n8n_data"\
+      \}\
+    \},\
+    \{\
+      "method": "shell.run",\
+      "params": \{\
+        "message": "docker pull docker.n8n.io/n8nio/n8n:latest"\
+      \}\
+    \},\
+    \{\
+      "method": "fs.write",\
+      "params": \{\
+        "path": "docker-compose.yml",\
+        "text": [\
+          "version: '3.1'",\
+          "services:",\
+          "  n8n:",\
+          "    image: docker.n8n.io/n8nio/n8n:latest",\
+          "    restart: always",\
+          "    ports:",\
+          "      - \\"5678:5678\\"",\
+          "    environment:",\
+          "      - DB_TYPE=sqlite",\
+          "      - N8N_BASIC_AUTH_ACTIVE=true", \
+          "      - N8N_BASIC_AUTH_USER=admin",\
+          "      - N8N_BASIC_AUTH_PASSWORD=admin123",\
+          "      - GENERIC_TIMEZONE=UTC",\
+          "    volumes:",\
+          "      - n8n_data:/home/node/.n8n",\
+          "",\
+          "volumes:",\
+          "  n8n_data:",\
+          "    external: true"\
+        ],\
+        "join": "\\n"\
+      \}\
+    \},\
+    \{\
+      "method": "fs.write", \
+      "params": \{\
+        "path": "README.md",\
+        "text": [\
+          "# n8n Installation",\
+          "",\
+          "n8n has been installed successfully!",\
+          "",\
+          "## Access Information:",\
+          "- URL: http://localhost:5678",\
+          "- Username: admin", \
+          "- Password: admin123",\
+          "",\
+          "## What is n8n?",\
+          "n8n is a workflow automation platform that gives technical teams the flexibility of code with the speed of no-code. With 400+ integrations, native AI capabilities, and a fair-code license, n8n lets you build powerful automations while maintaining full control over your data and deployments."\
+        ],\
+        "join": "\\n"\
+      \}\
+    \},\
+    \{\
+      "method": "notify",\
+      "params": \{\
+        "html": "<b>n8n Installation Complete!</b><br><br>Click 'Start n8n' to launch the application.",\
+        "href": "./start.json"\
+      \}\
+    \}\
+  ]\
+\}\
+}
